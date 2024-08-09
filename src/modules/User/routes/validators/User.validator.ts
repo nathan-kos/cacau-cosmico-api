@@ -8,6 +8,8 @@ export const createUserMiddleware = celebrate({
     usu_Telefone: Joi.string().required(),
     usu_CPF: Joi.string().required(),
     usu_Nasc: Joi.date().required(),
+    usu_Genero: Joi.string().required(),
+    usu_pap: Joi.string().required(),
   },
 });
 
@@ -37,13 +39,6 @@ export const updateUserMiddleware = celebrate({
   },
   body: {
     usu_Telefone: Joi.string(),
-    usu_Rua: Joi.string(),
-    usu_Numero: Joi.string(),
-    usu_Bairro: Joi.string(),
-    usu_CEP: Joi.string(),
-    usu_Complemento: Joi.string(),
-    usu_est_id: Joi.string(),
-    usu_cid_id: Joi.string(),
   },
 });
 
