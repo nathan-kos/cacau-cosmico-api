@@ -1,3 +1,5 @@
+import { CartaoRepository } from '@modules/Cartao/repository/CartaoRepository';
+import { ICartaoRepository } from '@modules/Cartao/repository/ICartaoRepository.interface';
 import { EnderecoRepository } from '@modules/Endereco/repository/EnderecoRepository';
 import { IEnderecoRepository } from '@modules/Endereco/repository/IEnderecoRepository.interface';
 import { UserRepository } from '@modules/User/repository/UserRepository';
@@ -11,6 +13,11 @@ container.registerSingleton<IUserRepository>('UserRepository', UserRepository);
 container.registerSingleton<IEnderecoRepository>(
   'EnderecoRepository',
   EnderecoRepository,
+);
+
+container.registerSingleton<ICartaoRepository>(
+  'CartaoRepository',
+  CartaoRepository,
 );
 
 // utils
