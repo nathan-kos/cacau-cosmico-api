@@ -21,6 +21,8 @@ class Endereco {
 
   end_usu_id: string;
 
+  end_Ativo: boolean;
+
   end_CriadoEm: Date;
 
   end_AtualizadoEm?: Date;
