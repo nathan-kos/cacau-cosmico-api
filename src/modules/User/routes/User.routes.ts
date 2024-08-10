@@ -1,3 +1,4 @@
+import { cartaoRoutes } from '@modules/Cartao/routes/Cartao.routes';
 import { enderecoRouter } from '@modules/Endereco/routes/Endereco.routes';
 import { Router } from 'express';
 import { UserController } from '../controller/User.controller';
@@ -14,6 +15,8 @@ const userRouter = Router();
 const userController = new UserController();
 
 userRouter.use(enderecoRouter);
+
+userRouter.use(cartaoRoutes);
 
 userRouter.post('/', createUserMiddleware, userController.create);
 
