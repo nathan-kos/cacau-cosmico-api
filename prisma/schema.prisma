@@ -38,6 +38,7 @@ model Endereco {
     end_Tipo        TipoEndereco
     end_usu_id      String
     end_UF          UF
+    end_Ativo       Boolean      @default(true)
 
     // relação
     end_usu          User     @relation(fields: [end_usu_id], references: [usu_Id])
@@ -54,6 +55,7 @@ model cartao {
     car_CVV      String
     car_usu_id   String
     car_Bandeira Bandeira
+    car_Ativo    Boolean  @default(true)
 
     // relação
     car_usu          User     @relation(fields: [car_usu_id], references: [usu_Id])
