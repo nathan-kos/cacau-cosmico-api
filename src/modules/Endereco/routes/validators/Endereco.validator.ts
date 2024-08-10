@@ -2,13 +2,14 @@ import { celebrate, Joi } from 'celebrate';
 
 export const createEnderecoMiddleware = celebrate({
   body: {
-    usu_Rua: Joi.string().required(),
-    usu_Numero: Joi.string().required(),
-    usu_Bairro: Joi.string().required(),
-    usu_CEP: Joi.string().required(),
-    usu_cid_nome: Joi.string().required(),
-    usu_est_UF: Joi.string().required(),
-    usu_Complemento: Joi.string(),
+    end_Rua: Joi.string().required(),
+    end_Numero: Joi.string().required(),
+    end_Bairro: Joi.string().required(),
+    end_CEP: Joi.string().required(),
+    end_Cidade: Joi.string().required(),
+    end_UF: Joi.string().required(),
+    end_Complemento: Joi.string(),
+    end_Tipo: Joi.string().required(),
   },
   params: {
     usu_Id: Joi.string().uuid().required(),
@@ -17,20 +18,36 @@ export const createEnderecoMiddleware = celebrate({
 
 export const updateEnderecoMiddleware = celebrate({
   body: {
-    usu_Rua: Joi.string().required(),
-    usu_Numero: Joi.string().required(),
-    usu_Bairro: Joi.string().required(),
-    usu_CEP: Joi.string().required(),
-    usu_cid_nome: Joi.string().required(),
-    usu_est_UF: Joi.string().required(),
-    usu_Complemento: Joi.string(),
+    end_Rua: Joi.string().required(),
+    end_Numero: Joi.string().required(),
+    end_Bairro: Joi.string().required(),
+    end_CEP: Joi.string().required(),
+    end_Cidade: Joi.string().required(),
+    end_UF: Joi.string().required().length(2),
+    end_Complemento: Joi.string(),
+    end_Tipo: Joi.string().required(),
   },
   params: {
     usu_Id: Joi.string().uuid().required(),
+    end_Id: Joi.string().uuid().required(),
   },
 });
 
 export const showEnderecoMiddleware = celebrate({
+  params: {
+    usu_Id: Joi.string().uuid().required(),
+    end_Id: Joi.string().uuid().required(),
+  },
+});
+
+export const deleteEnderecoMiddleware = celebrate({
+  params: {
+    usu_Id: Joi.string().uuid().required(),
+    end_Id: Joi.string().uuid().required(),
+  },
+});
+
+export const listEnderecoMiddleware = celebrate({
   params: {
     usu_Id: Joi.string().uuid().required(),
   },

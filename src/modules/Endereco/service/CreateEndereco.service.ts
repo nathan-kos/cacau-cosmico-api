@@ -1,94 +1,42 @@
-import { ICidadeRepository } from '@modules/Cidade/repository/ICidadeRepository.interface';
-import { IEstadoRepository } from '@modules/Estado/repository/IEstadoRepository.interface';
 import { IUserRepository } from '@modules/User/repository/UserRepository.interface';
-import { EntityAlreadyExistError } from '@shared/errors/EntityAlreadyExistError';
 import { EntityNotFoundError } from '@shared/errors/EntityNotFoundError';
 import { inject, injectable } from 'tsyringe';
 import { ICreateEnderecoDTO } from '../DTO/ICreateEnderecoDTO';
-import { IShowEnderecoDTO } from '../DTO/IShowEnderecoDTO';
+import { Endereco } from '../entitie/Endereco';
+import { IEnderecoRepository } from '../repository/IEnderecoRepository.interface';
 
 @injectable()
 class CreateEnderecoService {
   constructor(
+    @inject('EnderecoRepository')
+    private enderecoRepository: IEnderecoRepository,
+
     @inject('UserRepository')
     private userRepository: IUserRepository,
-
-    @inject('EstadoRepository')
-    private estadoRepository: IEstadoRepository,
-
-    @inject('CidadeRepository')
-    private cidadeRepository: ICidadeRepository,
   ) {}
 
-  public async execute(data: ICreateEnderecoDTO): Promise<IShowEnderecoDTO> {
+  public async execute(data: ICreateEnderecoDTO): Promise<Endereco> {
     const user = await this.userRepository.findBy({ usu_Id: data.usu_Id });
 
     if (!user) {
       throw new EntityNotFoundError('Usuário não encontrado');
     }
 
-    if (user.usu_CEP) {
-      throw new EntityAlreadyExistError(
-        'Endereço já cadastrado, utilize a rota de atualização de endereço',
-      );
-    }
-
-    const estado = await this.estadoRepository.findBy({
-      est_UF: data.endereco.usu_est_UF,
+    const endereco = await this.enderecoRepository.create({
+      usu_Id: data.usu_Id,
+      endereco: {
+        end_Rua: data.endereco.end_Rua,
+        end_Numero: data.endereco.end_Numero,
+        end_Bairro: data.endereco.end_Bairro,
+        end_CEP: data.endereco.end_CEP,
+        end_Complemento: data.endereco.end_Complemento,
+        end_Cidade: data.endereco.end_Cidade,
+        end_Tipo: data.endereco.end_Tipo,
+        end_UF: data.endereco.end_UF,
+      },
     });
 
-    if (!estado) {
-      throw new EntityNotFoundError('Estado não encontrado');
-    }
-
-    let cid_nome;
-
-    if (
-      data.endereco.usu_cid_nome &&
-      // eslint-disable-next-line quotes
-      data.endereco.usu_cid_nome.includes("'")
-    ) {
-      cid_nome = data.endereco.usu_cid_nome.replace(/'/g, '"');
-    } else {
-      cid_nome = data.endereco.usu_cid_nome;
-    }
-
-    const cidade = await this.cidadeRepository.findByNameAndState(
-      cid_nome,
-      estado.est_Id,
-    );
-
-    if (!cidade) {
-      throw new EntityNotFoundError('Cidade não encontrada');
-    }
-
-    const endereco = await this.userRepository.endereco(
-      {
-        usu_Rua: data.endereco.usu_Rua,
-        usu_Numero: data.endereco.usu_Numero,
-        usu_Bairro: data.endereco.usu_Bairro,
-        usu_CEP: data.endereco.usu_CEP,
-        usu_Complemento: data.endereco.usu_Complemento,
-        usu_cid_id: cidade.cid_Id,
-      },
-      data.usu_Id,
-    );
-
-    return {
-      usu_Rua: endereco.usu_Rua,
-      usu_Numero: endereco.usu_Numero,
-      usu_Bairro: endereco.usu_Bairro,
-      usu_CEP: endereco.usu_CEP,
-      usu_Complemento: endereco.usu_Complemento,
-      usu_cid: {
-        cid_Nome: cidade.cid_Nome,
-        cid_Id: cidade.cid_Id,
-        cid_est: {
-          est_Nome: estado.est_Nome,
-          est_Id: estado.est_Id,
-        },
-      },
-    };
+    return endereco;
   }
 }
 

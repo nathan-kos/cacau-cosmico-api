@@ -1,14 +1,17 @@
+import { TipoEndereco, UF } from '@prisma/client';
+
 class ICreateEnderecoDTO {
   usu_Id: string;
 
   endereco: {
-    usu_Rua: string;
-    usu_Numero: string;
-    usu_Bairro: string;
-    usu_CEP: string;
-    usu_Complemento?: string | null;
-    usu_cid_nome: string;
-    usu_est_UF: string;
+    end_Rua: string;
+    end_Numero: string;
+    end_Bairro: string;
+    end_CEP: string;
+    end_Complemento?: string | null;
+    end_Cidade: string;
+    end_Tipo: TipoEndereco;
+    end_UF: UF;
   };
 }
 

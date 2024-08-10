@@ -1,7 +1,5 @@
-import { CidadeRepository } from '@modules/Cidade/repository/CidadeRepository';
-import { ICidadeRepository } from '@modules/Cidade/repository/ICidadeRepository.interface';
-import { EstadoRepository } from '@modules/Estado/repository/EstadoRepository';
-import { IEstadoRepository } from '@modules/Estado/repository/IEstadoRepository.interface';
+import { EnderecoRepository } from '@modules/Endereco/repository/EnderecoRepository';
+import { IEnderecoRepository } from '@modules/Endereco/repository/IEnderecoRepository.interface';
 import { UserRepository } from '@modules/User/repository/UserRepository';
 import { IUserRepository } from '@modules/User/repository/UserRepository.interface';
 import { container } from 'tsyringe';
@@ -10,14 +8,9 @@ import { IHashProvider } from './providers/hashProvider/model/IHashProvider';
 
 container.registerSingleton<IUserRepository>('UserRepository', UserRepository);
 
-container.registerSingleton<IEstadoRepository>(
-  'EstadoRepository',
-  EstadoRepository,
-);
-
-container.registerSingleton<ICidadeRepository>(
-  'CidadeRepository',
-  CidadeRepository,
+container.registerSingleton<IEnderecoRepository>(
+  'EnderecoRepository',
+  EnderecoRepository,
 );
 
 // utils
