@@ -27,29 +27,6 @@ model User {
     usu_AtualizadoEm DateTime   @updatedAt
 }
 
-model Estado {
-    est_Id           String   @id @default(uuid())
-    est_Nome         String
-    est_UF           String   @db.Char(2)
-    // relação
-    cidade           Cidade[]
-    // padrão
-    est_CriadoEm     DateTime @default(now())
-    est_AtualizadoEm DateTime @updatedAt
-}
-
-model Cidade {
-    cid_Id           String     @id @default(uuid())
-    cid_Nome         String
-    // relação
-    estado           Estado     @relation(fields: [cid_est_id], references: [est_Id])
-    cid_est_id       String
-    // padrão
-    cid_CriadoEm     DateTime   @default(now())
-    cid_AtualizadoEm DateTime   @updatedAt
-    Endereco         Endereco[]
-}
-
 model Endereco {
     end_Id          String       @id @default(uuid())
     end_Rua         String
@@ -57,12 +34,12 @@ model Endereco {
     end_Bairro      String
     end_CEP         String       @db.Char(9)
     end_Complemento String?
-    end_cid_id      String
+    end_Cidade      String
     end_Tipo        TipoEndereco
     end_usu_id      String
+    end_UF          UF
 
     // relação
-    end_cid          Cidade   @relation(fields: [end_cid_id], references: [cid_Id])
     end_usu          User     @relation(fields: [end_usu_id], references: [usu_Id])
     // padrão
     end_CriadoEm     DateTime @default(now())
@@ -109,4 +86,34 @@ enum TipoEndereco {
     COMERCIAL
     ENTREGA
     COBRANCA
+}
+
+enum UF {
+    AC
+    AL
+    AP
+    AM
+    BA
+    CE
+    DF
+    ES
+    GO
+    MA
+    MT
+    MS
+    MG
+    PA
+    PB
+    PR
+    PE
+    PI
+    RJ
+    RN
+    RS
+    RO
+    RR
+    SC
+    SP
+    SE
+    TO
 }
