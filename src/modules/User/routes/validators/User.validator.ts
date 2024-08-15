@@ -39,6 +39,9 @@ export const updateUserMiddleware = celebrate({
   },
   body: {
     usu_Telefone: Joi.string(),
+    usu_Ativo: Joi.boolean(),
+    usu_Email: Joi.string().email(),
+    usu_Nome: Joi.string(),
   },
 });
 

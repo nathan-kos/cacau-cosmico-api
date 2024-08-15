@@ -14,6 +14,9 @@ class UpdateUserService {
   public async execute({
     usu_Id,
     usu_Telefone,
+    usu_Ativo,
+    usu_Email,
+    usu_Nome,
   }: IUpdateUserDTO): Promise<User> {
     const userExists = await this.userRepository.findBy({ usu_Id });
 
@@ -24,6 +27,9 @@ class UpdateUserService {
     const user = await this.userRepository.update({
       usu_Id,
       usu_Telefone,
+      usu_Ativo,
+      usu_Email,
+      usu_Nome,
     });
 
     return user;

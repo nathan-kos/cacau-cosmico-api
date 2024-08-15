@@ -74,13 +74,16 @@ class UserController {
   async UpdateUser(req: Request, res: Response) {
     const { usu_Id } = req.params;
 
-    const { usu_Telefone } = req.body;
+    const { usu_Telefone, usu_Ativo, usu_Email, usu_Nome } = req.body;
 
     const updateUser = container.resolve(UpdateUserService);
 
     const user = await updateUser.execute({
       usu_Id,
       usu_Telefone,
+      usu_Ativo,
+      usu_Email,
+      usu_Nome,
     });
 
     return res.status(200).json(user);
