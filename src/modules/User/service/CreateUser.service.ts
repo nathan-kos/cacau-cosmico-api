@@ -27,8 +27,6 @@ class CreateUser {
       );
     }
 
-    // adicionar verificações de id de papel, cidade e estado.
-
     const hashedPassword = await this.hashProvider.generateHash(DTO.usu_Senha);
 
     if (!this.hashProvider.compareHash(DTO.usu_Senha, hashedPassword)) {

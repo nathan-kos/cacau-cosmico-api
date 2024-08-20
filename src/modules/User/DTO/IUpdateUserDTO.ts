@@ -3,21 +3,11 @@ class IUpdateUserDTO {
 
   usu_Telefone?: string;
 
-  usu_Rua?: string;
-
-  usu_Numero?: string;
-
-  usu_Bairro?: string;
-
-  usu_CEP?: string;
-
-  usu_Complemento?: string;
-
-  usu_cid_id?: string;
-
-  usu_avatar?: string;
-
   usu_Ativo?: boolean;
+
+  usu_Email?: string;
+
+  usu_Nome?: string;
 }
 
 export { IUpdateUserDTO };

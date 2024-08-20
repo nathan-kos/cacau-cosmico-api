@@ -10,19 +10,28 @@ import { UpdateUserService } from '../service/UpdateUser.service';
 
 class UserController {
   async create(req: Request, res: Response) {
-    const { usu_Nome, usu_Email, usu_Senha, usu_Telefone, usu_CPF, usu_Nasc } =
-      req.body;
-
-    const createUser = container.resolve(CreateUser);
-
-    const user = await createUser.execute({
+    const {
       usu_Nome,
       usu_Email,
       usu_Senha,
       usu_Telefone,
       usu_CPF,
       usu_Nasc,
-      usu_pap_id: process.env.PAPEL_USUARIO as string,
+      usu_Genero,
+      usu_pap,
+    } = req.body;
+
+    const createUser = container.resolve(CreateUser);
+
+    const user = await createUser.execute({
+      usu_CPF,
+      usu_Email,
+      usu_Nasc,
+      usu_Nome,
+      usu_Senha,
+      usu_Telefone,
+      usu_Genero,
+      usu_pap,
     });
 
     return res.status(201).json(user);
@@ -65,27 +74,16 @@ class UserController {
   async UpdateUser(req: Request, res: Response) {
     const { usu_Id } = req.params;
 
-    const {
-      usu_Telefone,
-      usu_Rua,
-      usu_Numero,
-      usu_Bairro,
-      usu_CEP,
-      usu_Complemento,
-      usu_cid_id,
-    } = req.body;
+    const { usu_Telefone, usu_Ativo, usu_Email, usu_Nome } = req.body;
 
     const updateUser = container.resolve(UpdateUserService);
 
     const user = await updateUser.execute({
       usu_Id,
       usu_Telefone,
-      usu_Rua,
-      usu_Numero,
-      usu_Bairro,
-      usu_CEP,
-      usu_Complemento,
-      usu_cid_id,
+      usu_Ativo,
+      usu_Email,
+      usu_Nome,
     });
 
     return res.status(200).json(user);

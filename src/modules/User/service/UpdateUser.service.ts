@@ -14,12 +14,9 @@ class UpdateUserService {
   public async execute({
     usu_Id,
     usu_Telefone,
-    usu_Rua,
-    usu_Numero,
-    usu_Bairro,
-    usu_CEP,
-    usu_Complemento,
-    usu_cid_id,
+    usu_Ativo,
+    usu_Email,
+    usu_Nome,
   }: IUpdateUserDTO): Promise<User> {
     const userExists = await this.userRepository.findBy({ usu_Id });
 
@@ -27,17 +24,12 @@ class UpdateUserService {
       throw new EntityNotFoundError('User not found');
     }
 
-    // adicionar verificação de cidade e estado
-
     const user = await this.userRepository.update({
       usu_Id,
       usu_Telefone,
-      usu_Rua,
-      usu_Numero,
-      usu_Bairro,
-      usu_CEP,
-      usu_Complemento,
-      usu_cid_id,
+      usu_Ativo,
+      usu_Email,
+      usu_Nome,
     });
 
     return user;

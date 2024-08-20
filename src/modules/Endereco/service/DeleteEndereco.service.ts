@@ -1,11 +1,10 @@
 import { IUserRepository } from '@modules/User/repository/UserRepository.interface';
 import { EntityNotFoundError } from '@shared/errors/EntityNotFoundError';
 import { inject, injectable } from 'tsyringe';
-import { Endereco } from '../entitie/Endereco';
 import { IEnderecoRepository } from '../repository/IEnderecoRepository.interface';
 
 @injectable()
-class ShowEnderecoService {
+class DeleteEnderecoService {
   constructor(
     @inject('UserRepository')
     private userRepository: IUserRepository,
@@ -14,7 +13,7 @@ class ShowEnderecoService {
     private enderecoRepository: IEnderecoRepository,
   ) {}
 
-  public async execute(usu_Id: string, end_Id: string): Promise<Endereco> {
+  public async execute(usu_Id: string, end_Id: string): Promise<void> {
     const user = await this.userRepository.findBy({ usu_Id });
 
     if (!user) {
@@ -27,8 +26,8 @@ class ShowEnderecoService {
       throw new EntityNotFoundError('Endereço não encontrado');
     }
 
-    return endereco;
+    await this.enderecoRepository.delete(endereco);
   }
 }
 
-export { ShowEnderecoService };
+export { DeleteEnderecoService };

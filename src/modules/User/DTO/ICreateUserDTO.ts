@@ -11,7 +11,9 @@ class IcreateUserDTO {
 
   usu_Nasc: Date;
 
-  usu_pap_id: string;
+  usu_Genero: string;
+
+  usu_pap: string;
 }
 
 export { IcreateUserDTO };
