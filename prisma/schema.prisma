@@ -64,6 +64,34 @@ model cartao {
     car_AtualizadoEm DateTime @updatedAt
 }
 
+// Chocolate
+model Chocolate {
+    cho_Id           String   @id @default(uuid())
+    cho_Nome         String
+    cho_Descricao    String
+    cho_Valor        Float
+    cho_Imagem       String
+    cho_Ativo        Boolean  @default(true)
+    cho_Peso         Float
+    // padrão
+    cho_CriadoEm     DateTime @default(now())
+    cho_AtualizadoEm DateTime @updatedAt
+
+    // relação
+    cat_cho cat_cho[]
+}
+
+model cat_cho {
+    cch_Id           String    @id @default(uuid())
+    cch_cho_id       String
+    cch_Categoria    categoria
+    // relação
+    cch_cho          Chocolate @relation(fields: [cch_cho_id], references: [cho_Id])
+    // padrão
+    cch_CriadoEm     DateTime  @default(now())
+    cch_AtualizadoEm DateTime  @updatedAt
+}
+
 enum Papel {
     USER
     ADMIN
@@ -118,4 +146,23 @@ enum UF {
     SP
     SE
     TO
+}
+
+enum categoria {
+    BARRA
+    BOMBOM
+    TRUFA
+    CAIXA
+    BRANCO
+    AMARGO
+    AO_LEITE
+    AMENDOIM
+    NOZES
+    CONFETE
+    LICOR
+    CONFEITADO
+    RECHEADO
+    SEM_ACUCAR
+    SEM_LACTOSE
+    OUTROS
 }
