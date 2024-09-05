@@ -8,8 +8,14 @@ import { ListCartaoService } from '../service/ListCartao.service';
 class CartaoController {
   async create(req: Request, res: Response) {
     const { usu_Id } = req.params;
-    const { car_Nome, car_Numero, car_CVV, car_Validade, car_Bandeira } =
-      req.body;
+    const {
+      car_Nome,
+      car_Numero,
+      car_CVV,
+      car_Validade,
+      car_Bandeira,
+      car_Apelido,
+    } = req.body;
 
     const createCartao = container.resolve(CreateCartaoService);
 
@@ -20,6 +26,7 @@ class CartaoController {
       car_Validade,
       car_usu_id: usu_Id,
       car_Bandeira,
+      car_Apelido,
     });
 
     return res.status(201).json(cartao);

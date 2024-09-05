@@ -17,6 +17,8 @@ class Cartao {
 
   car_Ativo: boolean;
 
+  car_Apelido: string;
+
   car_CriadoEm: Date;
 
   car_AtualizadoEm?: Date;

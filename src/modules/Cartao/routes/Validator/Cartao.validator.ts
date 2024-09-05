@@ -7,6 +7,7 @@ export const createCartaoMiddleware = celebrate({
     car_CVV: Joi.string().required(),
     car_Validade: Joi.string().required(),
     car_Bandeira: Joi.string().required(),
+    car_Apelido: Joi.string().required(),
   },
 
   params: {

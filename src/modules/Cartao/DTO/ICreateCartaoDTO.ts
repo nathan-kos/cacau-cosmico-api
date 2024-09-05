@@ -12,6 +12,8 @@ class ICreateCartaoDTO {
   car_usu_id: string;
 
   car_Bandeira: Bandeira;
+
+  car_Apelido: string;
 }
 
 export { ICreateCartaoDTO };
