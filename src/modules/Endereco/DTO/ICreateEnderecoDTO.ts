@@ -12,6 +12,9 @@ class ICreateEnderecoDTO {
     end_Cidade: string;
     end_Tipo: TipoEndereco;
     end_UF: UF;
+    end_Cobranca: boolean;
+    end_Entrega: boolean;
+    end_Apelido: string;
   };
 }
 

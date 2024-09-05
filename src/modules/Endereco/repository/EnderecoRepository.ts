@@ -19,6 +19,9 @@ class EnderecoRepository implements IEnderecoRepository {
         end_Tipo: entity.endereco.end_Tipo,
         end_UF: entity.endereco.end_UF,
         end_Cidade: entity.endereco.end_Cidade,
+        end_Apelido: entity.endereco.end_Apelido,
+        end_Entrega: entity.endereco.end_Entrega,
+        end_Cobranca: entity.endereco.end_Cobranca,
       },
     });
 

@@ -33,6 +33,9 @@ class CreateEnderecoService {
         end_Cidade: data.endereco.end_Cidade,
         end_Tipo: data.endereco.end_Tipo,
         end_UF: data.endereco.end_UF,
+        end_Cobranca: data.endereco.end_Cobranca,
+        end_Entrega: data.endereco.end_Entrega,
+        end_Apelido: data.endereco.end_Apelido,
       },
     });
 

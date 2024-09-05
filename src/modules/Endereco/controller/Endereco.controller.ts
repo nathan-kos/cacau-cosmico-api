@@ -18,6 +18,9 @@ class EnderecoController {
       end_UF,
       end_Complemento,
       end_Tipo,
+      end_Apelido,
+      end_Entrega,
+      end_Cobranca,
     } = req.body;
 
     const { usu_Id } = req.params;
@@ -34,6 +37,9 @@ class EnderecoController {
         end_UF,
         end_Complemento,
         end_Tipo,
+        end_Apelido,
+        end_Entrega,
+        end_Cobranca,
       },
     });
     return res.status(201).json(endereco);
@@ -49,6 +55,9 @@ class EnderecoController {
       end_UF,
       end_Complemento,
       end_Tipo,
+      end_Apelido,
+      end_Entrega,
+      end_Cobranca,
     } = req.body;
     const { usu_Id, end_Id } = req.params;
     const updateUser = container.resolve(UpdateEnderecoService);
@@ -64,6 +73,9 @@ class EnderecoController {
       end_UF,
       end_Complemento,
       end_Tipo: end_Tipo as TipoEndereco,
+      end_Apelido,
+      end_Entrega,
+      end_Cobranca,
     });
 
     return res.status(200).json(user);

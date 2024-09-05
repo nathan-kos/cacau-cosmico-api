@@ -23,6 +23,12 @@ class Endereco {
 
   end_Ativo: boolean;
 
+  end_Apelido: string;
+
+  end_Entrega: boolean;
+
+  end_Cobranca: boolean;
+
   end_CriadoEm: Date;
 
   end_AtualizadoEm?: Date;

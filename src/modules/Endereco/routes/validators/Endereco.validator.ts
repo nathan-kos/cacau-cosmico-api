@@ -10,6 +10,9 @@ export const createEnderecoMiddleware = celebrate({
     end_UF: Joi.string().required(),
     end_Complemento: Joi.string().optional(),
     end_Tipo: Joi.string().required(),
+    end_Apelido: Joi.string().required(),
+    end_Entrega: Joi.boolean().required(),
+    end_Cobranca: Joi.boolean().required(),
   },
   params: {
     usu_Id: Joi.string().uuid().required(),
@@ -26,6 +29,9 @@ export const updateEnderecoMiddleware = celebrate({
     end_UF: Joi.string().required().length(2),
     end_Complemento: Joi.string().optional(),
     end_Tipo: Joi.string().required(),
+    end_Apelido: Joi.string().required(),
+    end_Entrega: Joi.boolean().required(),
+    end_Cobranca: Joi.boolean().required(),
   },
   params: {
     usu_Id: Joi.string().uuid().required(),

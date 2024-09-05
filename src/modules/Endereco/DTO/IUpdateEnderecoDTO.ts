@@ -20,6 +20,12 @@ class IUpdateEnderecoDTO {
   end_UF: UF;
 
   end_Cidade: string;
+
+  end_Apelido: string;
+
+  end_Entrega: boolean;
+
+  end_Cobranca: boolean;
 }
 
 export { IUpdateEnderecoDTO };
