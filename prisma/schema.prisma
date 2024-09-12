@@ -22,6 +22,7 @@ model User {
     // relação
     Endereco         Endereco[]
     cartao           cartao[]
+    Pedido           Pedido[]
     // padrão
     usu_CriadoEm     DateTime   @default(now())
     usu_AtualizadoEm DateTime   @updatedAt
@@ -45,6 +46,7 @@ model Endereco {
 
     // relação
     end_usu          User     @relation(fields: [end_usu_id], references: [usu_Id])
+    pedidos          Pedido[]
     // padrão
     end_CriadoEm     DateTime @default(now())
     end_AtualizadoEm DateTime @updatedAt
@@ -62,10 +64,11 @@ model cartao {
     car_Apelido  String
 
     // relação
-    car_usu          User     @relation(fields: [car_usu_id], references: [usu_Id])
+    car_usu          User            @relation(fields: [car_usu_id], references: [usu_Id])
+    car_ped          cartao_pedido[]
     // padrão
-    car_CriadoEm     DateTime @default(now())
-    car_AtualizadoEm DateTime @updatedAt
+    car_CriadoEm     DateTime        @default(now())
+    car_AtualizadoEm DateTime        @updatedAt
 }
 
 // Chocolate
@@ -82,10 +85,11 @@ model Chocolate {
     cho_AtualizadoEm DateTime @updatedAt
 
     // relação
-    cat_cho cat_cho[]
+    cat_cho categoria_chocolate[]
+    cho_ped chocolate_pedido[]
 }
 
-model cat_cho {
+model categoria_chocolate {
     cch_Id           String    @id @default(uuid())
     cch_cho_id       String
     cch_Categoria    categoria
@@ -94,6 +98,97 @@ model cat_cho {
     // padrão
     cch_CriadoEm     DateTime  @default(now())
     cch_AtualizadoEm DateTime  @updatedAt
+}
+
+// Pedido
+model Pedido {
+    ped_Id         String       @id @default(uuid())
+    ped_usu_id     String
+    ped_Status     StatusPedido
+    ped_ValorTotal Float
+    ped_Ativo      Boolean      @default(true)
+    ped_end_id     String
+    ped_Frete      Float
+
+    // padrão
+    ped_CriadoEm     DateTime @default(now())
+    ped_AtualizadoEm DateTime @updatedAt
+
+    // relação
+    ped_usu User               @relation(fields: [ped_usu_id], references: [usu_Id])
+    ped_end Endereco           @relation(fields: [ped_end_id], references: [end_Id])
+    ped_car cartao_pedido[]
+    cho_ped chocolate_pedido[]
+    ped_cup pedido_cupom[]
+}
+
+model chocolate_pedido {
+    chp_Id           String   @id @default(uuid())
+    chp_ped_id       String
+    chp_cho_id       String
+    chp_Quantidade   Int
+    // padrão
+    chp_CriadoEm     DateTime @default(now())
+    chp_AtualizadoEm DateTime @updatedAt
+
+    // relação
+    chp_ped         Pedido            @relation(fields: [chp_ped_id], references: [ped_Id])
+    chp_cho         Chocolate         @relation(fields: [chp_cho_id], references: [cho_Id])
+    Troca_Devolucao Troca_Devolucao[]
+}
+
+model cartao_pedido {
+    cap_Id           String   @id @default(uuid())
+    cap_ped_id       String
+    cap_car_id       String
+    cap_Valor        Float
+    // padrão
+    cap_CriadoEm     DateTime @default(now())
+    cap_AtualizadoEm DateTime @updatedAt
+    // relação
+    cap_ped          Pedido   @relation(fields: [cap_ped_id], references: [ped_Id])
+    cap_car          cartao   @relation(fields: [cap_car_id], references: [car_Id])
+}
+
+model Troca_Devolucao {
+    tde_Id           String           @id @default(uuid())
+    tde_cho_ped_id   String
+    tde_Troca        Boolean
+    tde_Quantidade   Int
+    tde_Status       tde_Status
+    // padrão
+    tde_CriadoEm     DateTime         @default(now())
+    tde_AtualizadoEm DateTime         @updatedAt
+    // relação
+    tde_cho_ped      chocolate_pedido @relation(fields: [tde_cho_ped_id], references: [chp_Id])
+    cupom            Cupom[]
+}
+
+// cupom
+model Cupom {
+    cup_Id           String          @id @default(uuid())
+    cup_Codigo       String          @unique
+    cup_Valor        Float
+    cup_Ativo        Boolean         @default(true)
+    cup_tde_id       String
+    // padrão
+    cup_CriadoEm     DateTime        @default(now())
+    cup_AtualizadoEm DateTime        @updatedAt
+    // relação
+    ped_cup          pedido_cupom[]
+    cup_tde          Troca_Devolucao @relation(fields: [cup_tde_id], references: [tde_Id])
+}
+
+model pedido_cupom {
+    pcu_Id           String   @id @default(uuid())
+    pcu_ped_id       String
+    pcu_cup_id       String
+    // padrão
+    pcu_CriadoEm     DateTime @default(now())
+    pcu_AtualizadoEm DateTime @updatedAt
+    // relação
+    pcu_ped          Pedido   @relation(fields: [pcu_ped_id], references: [ped_Id])
+    pcu_cup          Cupom    @relation(fields: [pcu_cup_id], references: [cup_Id])
 }
 
 enum Papel {
@@ -169,4 +264,24 @@ enum categoria {
     SEM_ACUCAR
     SEM_LACTOSE
     OUTROS
+}
+
+enum StatusPedido {
+    PAGAMENTO_REALIZADO
+    PAGAMENTO_REJEITADO
+    EM_TRANSPORTE
+    ENTREGUE
+    CANCELADO
+}
+
+enum tde_Status {
+    TROCA_SOLICITADA
+    TROCA_ACEITA
+    TROCA_RECUSADA
+    TROCA_REALIZADA
+
+    DEVOLUCAO_SOLICITADA
+    DEVOLUCAO_ACEITA
+    DEVOLUCAO_RECUSADA
+    DEVOLUCAO_REALIZADA
 }
