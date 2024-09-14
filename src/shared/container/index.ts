@@ -30,7 +30,7 @@ container.registerSingleton<IChocolateRepository>(
 );
 
 container.registerSingleton<ICategoriaChocolateRepository>(
-  'ICategoriaChocolateRepository',
+  'CategoriaChocolateRepository',
   Categoria_ChocolateRepository,
 );
 
