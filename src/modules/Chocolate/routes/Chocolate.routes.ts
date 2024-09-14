@@ -9,8 +9,8 @@ chocolateRoutes.get('/:cho_Id', chocolateController.findChocolateById);
 
 chocolateRoutes.get('/', chocolateController.listAllAtivos);
 
-chocolateRoutes.get('/:cat', chocolateController.listAllByCategoria);
+chocolateRoutes.get('/categoria/:cat', chocolateController.listAllByCategoria);
 
-chocolateRoutes.get('/pesquisa/:cho_Nome', chocolateController.listAllByName);
+chocolateRoutes.get('/pesquisar/:cho_Nome', chocolateController.listAllByName);
 
 export { chocolateRoutes };
