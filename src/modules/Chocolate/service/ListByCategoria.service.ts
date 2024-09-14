@@ -8,10 +8,10 @@ import { IChocolateRepository } from '../repository/IChocolateRepository.interfa
 @injectable()
 class ListByCategoriaService {
   constructor(
-    @inject('IChocolateRepository')
+    @inject('ChocolateRepository')
     private chocolateRepository: IChocolateRepository,
 
-    @inject('ICategoriaChocolateRepository')
+    @inject('CategoriaChocolateRepository')
     private categoriaChocolateRepository: ICategoriaChocolateRepository,
   ) {}
 
@@ -38,6 +38,18 @@ class ListByCategoriaService {
         if (!chocolate) {
           return;
         }
+
+        const categorias = await this.categoriaChocolateRepository.listBy({
+          page: 1,
+          limit: 100,
+          filter: {
+            cch_cho_id: chocolate.cho_Id,
+          },
+        });
+
+        Object.assign(chocolate, {
+          categorias: categorias.results,
+        });
 
         chocolates.push(chocolate);
       }),
