@@ -59,7 +59,10 @@ class ChocolateRepository implements IChocolateRepository {
 
     const total = await prisma.chocolate.count({
       where: {
-        ...filter,
+        cho_Nome: {
+          contains: filter.cho_Nome,
+          mode: 'insensitive',
+        },
       },
     });
 
