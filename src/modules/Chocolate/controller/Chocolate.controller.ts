@@ -2,6 +2,7 @@ import { categoria } from '@prisma/client';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import { FindByIdService } from '../service/FindById.service';
+import { GetIndexChocolateService } from '../service/GetIndexChocolate.service';
 import { ListAllAtivosService } from '../service/ListAllAtivos.service';
 import { ListByCategoriaService } from '../service/ListByCategoria.service';
 import { ListAllNameService } from '../service/ListByName.service';
@@ -58,6 +59,16 @@ class ChocolateController {
         cho_Nome,
       },
     });
+
+    return res.status(200).json(chocolates);
+  }
+
+  async listIndex(req: Request, res: Response) {
+    const getIndexChocolateService = container.resolve(
+      GetIndexChocolateService,
+    );
+
+    const chocolates = await getIndexChocolateService.execute();
 
     return res.status(200).json(chocolates);
   }
