@@ -257,3 +257,17 @@ INSERT INTO public.cartao(
 INSERT INTO public."Endereco"(
 	"end_Id", "end_Rua", "end_Numero", "end_Bairro", "end_CEP", "end_Complemento", "end_Tipo", end_usu_id, "end_CriadoEm", "end_AtualizadoEm", "end_Cidade", "end_UF", "end_Ativo", "end_Apelido", "end_Cobranca", "end_Entrega")
 	VALUES ('cc5c0c2f-391f-439d-956e-fb6227d6fd55', 'Mauricio de Souza', '46', 'literario', '98498539 ', 'Palmeiras', 'RESIDENCIAL', '55da48c6-a149-4b82-81ec-4739b60570ff', now(), now(), 'Suzano', 'SP', true, 'Casa', true, true);
+
+-- Pedido
+INSERT INTO public."Pedido"(
+	"ped_Id", ped_usu_id, "ped_Status", "ped_ValorTotal", "ped_Ativo", ped_end_id, "ped_Frete", "ped_CriadoEm", "ped_AtualizadoEm")
+	VALUES ('6e94c38a-6b19-4912-b43e-a9386d16b113', '55da48c6-a149-4b82-81ec-4739b60570ff', 'PAGAMENTO_REALIZADO', 40, true, 'cc5c0c2f-391f-439d-956e-fb6227d6fd55', 5, now(), now());
+
+-- Itens do pedido
+INSERT INTO public.chocolate_pedido(
+	"chp_Id", chp_ped_id, chp_cho_id, "chp_Quantidade", "chp_CriadoEm", "chp_AtualizadoEm")
+	VALUES ('f0867e11-8d86-4330-94a3-3eb8ee49197d', '6e94c38a-6b19-4912-b43e-a9386d16b113', '85b23e33-1fc8-405b-bc2f-d26e7ef12a1d', 2, now(), now());
+
+INSERT INTO public.chocolate_pedido(
+	"chp_Id", chp_ped_id, chp_cho_id, "chp_Quantidade", "chp_CriadoEm", "chp_AtualizadoEm")
+	VALUES ('6f9509bd-8f60-4ade-918f-b016e2abef9d', '6e94c38a-6b19-4912-b43e-a9386d16b113', '4b871583-1685-41e7-a4df-a96e8c02ca67', 1, now(), now());
