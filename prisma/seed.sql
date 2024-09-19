@@ -241,3 +241,9 @@ INSERT INTO public.categoria_chocolate(
 INSERT INTO public.categoria_chocolate(
     "cch_Id", cch_cho_id, "cch_Categoria", "cch_CriadoEm", "cch_AtualizadoEm")
     VALUES ('d3c4a67b-e36e-4623-bc25-cfaef9589ff5', 'f0e5c0b6-65f6-48b9-a745-85c540a8f717', 'NOZES', now(), now());
+
+
+-- usuário
+INSERT INTO public."User"(
+	"usu_Id", "usu_Nome", "usu_Email", "usu_Senha", "usu_Telefone", "usu_CPF", "usu_Nasc", usu_pap, "usu_Ativo", "usu_Genero", "usu_CriadoEm", "usu_AtualizadoEm")
+	VALUES ('55da48c6-a149-4b82-81ec-4739b60570ff', 'Nathan KS', 'principal@email.com', '$2b$08$mzNBBEYiOGrI1qo6F8DvIuFpfF34iUVTq3xgQKpBhDh9s2p7PX9RK', '3456546456423', '15389745346', '2001-11-11', 'USER', TRUE, 'MASCULINO', NOW(), now());
