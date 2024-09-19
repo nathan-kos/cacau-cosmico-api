@@ -276,3 +276,11 @@ INSERT INTO public.chocolate_pedido(
 INSERT INTO public.cartao_pedido(
 	"cap_Id", cap_ped_id, cap_car_id, "cap_Valor", "cap_CriadoEm", "cap_AtualizadoEm")
 	VALUES ('d76d044e-fda2-466b-bc11-04219741cc73', '6e94c38a-6b19-4912-b43e-a9386d16b113', 'eb3bfab0-395d-4caa-b766-2c3ecd51701a', 40, now(), now());
+
+INSERT INTO public."Troca_Devolucao"(
+	"tde_Id", tde_cho_ped_id, "tde_Troca", "tde_Quantidade", "tde_Status", "tde_CriadoEm", "tde_AtualizadoEm")
+	VALUES ('10e0589d-d151-4eab-9e82-39f1982c4f87', 'f0867e11-8d86-4330-94a3-3eb8ee49197d', false, 2, 'DEVOLUCAO_SOLICITADA', now(), now());
+
+INSERT INTO public."Cupom"(
+	"cup_Id", "cup_Codigo", "cup_Valor", "cup_Ativo", cup_tde_id, "cup_CriadoEm", "cup_AtualizadoEm")
+	VALUES ('e3a92d7e-2e61-4cad-8160-532cff86c76a', 'f0867e11', 25, true, '10e0589d-d151-4eab-9e82-39f1982c4f87', now(), now());
