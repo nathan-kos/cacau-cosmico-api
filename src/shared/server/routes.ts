@@ -11,6 +11,8 @@ routes.use('/chocolate', chocolateRoutes);
 
 routes.use('/pedido', pedidorouter);
 
+routes.use('/cupom', userRouter);
+
 routes.get('/', (request, response) => {
   response.send('Bem Vindo ao API rest da Cacau Cósmico 📚🚀🚀🚀');
 });
