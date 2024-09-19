@@ -1,9 +1,10 @@
 import { StatusPedido } from '@prisma/client';
 import { EntityNotFoundError } from '@shared/errors/EntityNotFoundError';
-import { inject } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import { Pedido } from '../entitie/Pedido';
 import { PedidoRepository } from '../repository/PedidoRepository';
 
+@injectable()
 class AtualizarStatusPedidoService {
   constructor(
     @inject('PedidoRepository')

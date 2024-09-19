@@ -1,8 +1,9 @@
 import { EntityNotFoundError } from '@shared/errors/EntityNotFoundError';
-import { inject } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import { Pedido } from '../entitie/Pedido';
 import { PedidoRepository } from '../repository/PedidoRepository';
 
+@injectable()
 class findPedidoByIdService {
   constructor(
     @inject('PedidoRepository')

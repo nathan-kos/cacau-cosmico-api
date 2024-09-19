@@ -11,10 +11,11 @@ import { UserRepository } from '@modules/User/repository/UserRepository';
 import { StatusPedido } from '@prisma/client';
 import { BadRequestError } from '@shared/errors/BadRequestError';
 import { EntityNotFoundError } from '@shared/errors/EntityNotFoundError';
-import { inject } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import { Pedido } from '../entitie/Pedido';
 import { PedidoRepository } from '../repository/PedidoRepository';
 
+@injectable()
 class CreatePedidoService {
   constructor(
     @inject('PedidoRepository')

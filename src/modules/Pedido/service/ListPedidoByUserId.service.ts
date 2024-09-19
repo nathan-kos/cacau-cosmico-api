@@ -1,10 +1,11 @@
 import { BadRequestError } from '@shared/errors/BadRequestError';
 import { IPaginatedRequest } from '@shared/interfaces/IPaginatedRequest';
 import { IPaginatedResponse } from '@shared/interfaces/IPaginatedResponse';
-import { inject } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import { Pedido } from '../entitie/Pedido';
 import { PedidoRepository } from '../repository/PedidoRepository';
 
+@injectable()
 class ListPedidoByUserIdService {
   constructor(
     @inject('PedidoRepository')
