@@ -271,3 +271,8 @@ INSERT INTO public.chocolate_pedido(
 INSERT INTO public.chocolate_pedido(
 	"chp_Id", chp_ped_id, chp_cho_id, "chp_Quantidade", "chp_CriadoEm", "chp_AtualizadoEm")
 	VALUES ('6f9509bd-8f60-4ade-918f-b016e2abef9d', '6e94c38a-6b19-4912-b43e-a9386d16b113', '4b871583-1685-41e7-a4df-a96e8c02ca67', 1, now(), now());
+
+-- cartão pedido
+INSERT INTO public.cartao_pedido(
+	"cap_Id", cap_ped_id, cap_car_id, "cap_Valor", "cap_CriadoEm", "cap_AtualizadoEm")
+	VALUES ('d76d044e-fda2-466b-bc11-04219741cc73', '6e94c38a-6b19-4912-b43e-a9386d16b113', 'eb3bfab0-395d-4caa-b766-2c3ecd51701a', 40, now(), now());
