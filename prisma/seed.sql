@@ -247,3 +247,13 @@ INSERT INTO public.categoria_chocolate(
 INSERT INTO public."User"(
 	"usu_Id", "usu_Nome", "usu_Email", "usu_Senha", "usu_Telefone", "usu_CPF", "usu_Nasc", usu_pap, "usu_Ativo", "usu_Genero", "usu_CriadoEm", "usu_AtualizadoEm")
 	VALUES ('55da48c6-a149-4b82-81ec-4739b60570ff', 'Nathan KS', 'principal@email.com', '$2b$08$mzNBBEYiOGrI1qo6F8DvIuFpfF34iUVTq3xgQKpBhDh9s2p7PX9RK', '3456546456423', '15389745346', '2001-11-11', 'USER', TRUE, 'MASCULINO', NOW(), now());
+
+    -- cartão desse usuário
+INSERT INTO public.cartao(
+	"car_Id", "car_Nome", "car_Numero", "car_Validade", "car_CVV", car_usu_id, "car_Bandeira", "car_CriadoEm", "car_AtualizadoEm", "car_Ativo", "car_Apelido")
+	VALUES ('eb3bfab0-395d-4caa-b766-2c3ecd51701a', 'Nathan KS', '923840923840293', '10/2026', '3333', '55da48c6-a149-4b82-81ec-4739b60570ff', 'MASTERCARD', now(), now(), true, 'Cartão Principal');
+
+    -- endereço desse usuário
+INSERT INTO public."Endereco"(
+	"end_Id", "end_Rua", "end_Numero", "end_Bairro", "end_CEP", "end_Complemento", "end_Tipo", end_usu_id, "end_CriadoEm", "end_AtualizadoEm", "end_Cidade", "end_UF", "end_Ativo", "end_Apelido", "end_Cobranca", "end_Entrega")
+	VALUES ('cc5c0c2f-391f-439d-956e-fb6227d6fd55', 'Mauricio de Souza', '46', 'literario', '98498539 ', 'Palmeiras', 'RESIDENCIAL', '55da48c6-a149-4b82-81ec-4739b60570ff', now(), now(), 'Suzano', 'SP', true, 'Casa', true, true);
