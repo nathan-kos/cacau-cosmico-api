@@ -90,7 +90,10 @@ class ListPedidoByUserIdService {
 
         await Promise.all([promisseChocolate, promisseCartao]);
 
-        Object.assign(pedido, { chocolatePedido, cartaoPedido });
+        const cho = chocolatePedido.results;
+        const car = cartaoPedido.results;
+
+        Object.assign(pedido, { cho, car });
 
         return pedido;
       }),
