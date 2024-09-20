@@ -11,11 +11,10 @@ import { UserRepository } from '@modules/User/repository/UserRepository';
 import { StatusPedido } from '@prisma/client';
 import { BadRequestError } from '@shared/errors/BadRequestError';
 import { EntityNotFoundError } from '@shared/errors/EntityNotFoundError';
-import { inject, injectable } from 'tsyringe';
+import { inject } from 'tsyringe';
 import { Pedido } from '../entitie/Pedido';
 import { PedidoRepository } from '../repository/PedidoRepository';
 
-@injectable()
 class CreatePedidoService {
   constructor(
     @inject('PedidoRepository')
@@ -64,66 +63,56 @@ class CreatePedidoService {
     }[];
     cupons: string[];
   }): Promise<Pedido> {
-    const user = await this.userRepository.findBy({
-      usu_Id,
-    });
+    const user = await this.userRepository.findBy({ usu_Id });
 
     if (!user) {
       throw new EntityNotFoundError('Usuario não encontrado');
     }
 
-    const endereco = await this.enderecoRepository.findBy({
-      end_Id,
-    });
+    const endereco = await this.enderecoRepository.findBy({ end_Id });
 
     if (!endereco || endereco.end_usu_id !== usu_Id) {
       throw new EntityNotFoundError('Endereço não encontrado');
     }
 
     const chocolatesFind: Chocolate[] = [];
-
-    // chocolates
-    const promisseChocolate = chocolates.map(async (chocolate) => {
-      const chocolateFind = await this.chocolateRepository.findBy({
-        cho_Id: chocolate.cho_Id,
-      });
-
-      if (!chocolateFind) {
-        throw new EntityNotFoundError('Chocolate não encontrado');
-      }
-
-      chocolatesFind.push(chocolateFind);
-    });
-
-    // cartoes
     const cartoesFind: Cartao[] = [];
-
-    const promissesCartao = cartoes.map(async (cartao) => {
-      const cartaoFind = await this.cartaoRepository.findBy({
-        car_Id: cartao.car_Id,
-      });
-
-      if (!cartaoFind) {
-        throw new EntityNotFoundError('Cartão não encontrado');
-      }
-
-      cartoesFind.push(cartaoFind);
-    });
-
     const cuponsFind: Cupom[] = [];
-    const promissesCupom = cupons.map(async (cupom) => {
-      const cupomFind = await this.cupomRepository.findBy({
-        cup_Id: cupom,
-      });
 
-      if (!cupomFind) {
-        throw new EntityNotFoundError('Cupom não encontrado');
-      }
+    // Agrupar todas as Promises em uma única chamada de Promise.all
+    await Promise.all([
+      ...chocolates.map(async (chocolate) => {
+        const chocolateFind = await this.chocolateRepository.findBy({
+          cho_Id: chocolate.cho_Id,
+        });
 
-      cuponsFind.push(cupomFind);
-    });
+        if (!chocolateFind) {
+          throw new EntityNotFoundError('Chocolate não encontrado');
+        }
 
-    await Promise.all([promisseChocolate, promissesCartao, promissesCupom]);
+        chocolatesFind.push(chocolateFind);
+      }),
+      ...cartoes.map(async (cartao) => {
+        const cartaoFind = await this.cartaoRepository.findBy({
+          car_Id: cartao.car_Id,
+        });
+
+        if (!cartaoFind) {
+          throw new EntityNotFoundError('Cartão não encontrado');
+        }
+
+        cartoesFind.push(cartaoFind);
+      }),
+      ...cupons.map(async (cupom) => {
+        const cupomFind = await this.cupomRepository.findBy({ cup_Id: cupom });
+
+        if (!cupomFind) {
+          throw new EntityNotFoundError('Cupom não encontrado');
+        }
+
+        cuponsFind.push(cupomFind);
+      }),
+    ]);
 
     // total é a soma dos chocolates + frete - cupons
     const totalChocolates = chocolates.reduce((acc, chocolate) => {
@@ -177,39 +166,38 @@ class CreatePedidoService {
       throw new BadRequestError('Erro ao criar pedido');
     }
 
-    const promissesChocolatePedido = chocolates.map(async (chocolate) => {
-      const chocolateFinded = chocolatesFind.find(
-        (chocolateItem) => chocolateItem.cho_Id === chocolate.cho_Id,
-      );
+    await Promise.all([
+      ...chocolates.map(async (chocolate) => {
+        const chocolateFinded = chocolatesFind.find(
+          (chocolateItem) => chocolateItem.cho_Id === chocolate.cho_Id,
+        );
 
-      if (!chocolateFinded) {
-        throw new EntityNotFoundError('Chocolate não encontrado');
-      }
+        if (!chocolateFinded) {
+          throw new EntityNotFoundError('Chocolate não encontrado');
+        }
 
-      await this.chocolatePedidoRepository.create({
-        chp_cho_id: chocolateFinded.cho_Id,
-        chp_ped_id: pedido.ped_Id,
-        chp_Quantidade: chocolate.quantidade,
-      });
-    });
+        await this.chocolatePedidoRepository.create({
+          chp_cho_id: chocolateFinded.cho_Id,
+          chp_ped_id: pedido.ped_Id,
+          chp_Quantidade: chocolate.quantidade,
+        });
+      }),
+      ...cartoes.map(async (cartao) => {
+        const cartaoFinded = cartoesFind.find(
+          (cartaoItem) => cartaoItem.car_Id === cartao.car_Id,
+        );
 
-    const promissesCartaoPedido = cartoes.map(async (cartao) => {
-      const cartaoFinded = cartoesFind.find(
-        (cartaoItem) => cartaoItem.car_Id === cartao.car_Id,
-      );
+        if (!cartaoFinded) {
+          throw new EntityNotFoundError('Cartão não encontrado');
+        }
 
-      if (!cartaoFinded) {
-        throw new EntityNotFoundError('Cartão não encontrado');
-      }
-
-      await this.cartaoPedidoRepository.create({
-        cap_car_id: cartaoFinded.car_Id,
-        cap_ped_id: pedido.ped_Id,
-        cap_Valor: cartao.car_Valor,
-      });
-    });
-
-    await Promise.all([promissesChocolatePedido, promissesCartaoPedido]);
+        await this.cartaoPedidoRepository.create({
+          cap_car_id: cartaoFinded.car_Id,
+          cap_ped_id: pedido.ped_Id,
+          cap_Valor: cartao.car_Valor,
+        });
+      }),
+    ]);
 
     return pedido;
   }
