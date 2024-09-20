@@ -1,3 +1,4 @@
+import { EntityNotFoundError } from '@shared/errors/EntityNotFoundError';
 import { inject, injectable } from 'tsyringe';
 import { ICupomRepository } from '../repository/ICupomRepository.interface';
 
@@ -12,6 +13,10 @@ class FindByCodigoService {
     const cupom = await this.cupomRepository.findBy({
       cup_Codigo: codigo,
     });
+
+    if (!cupom) {
+      throw new EntityNotFoundError('Cupom não encontrado');
+    }
 
     return cupom;
   }
