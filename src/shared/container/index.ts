@@ -14,6 +14,8 @@ import { EnderecoRepository } from '@modules/Endereco/repository/EnderecoReposit
 import { IEnderecoRepository } from '@modules/Endereco/repository/IEnderecoRepository.interface';
 import { PedidoRepository } from '@modules/Pedido/repository/PedidoRepository';
 import { IPedidoRepository } from '@modules/Pedido/repository/PedidoRepository.interface';
+import { PedidoCupomRepository } from '@modules/Pedido_Cupom/repository/PedidoCupomRepository';
+import { IPedidoCupomRepository } from '@modules/Pedido_Cupom/repository/PedidoCupomRepository.interface';
 import { UserRepository } from '@modules/User/repository/UserRepository';
 import { IUserRepository } from '@modules/User/repository/UserRepository.interface';
 import { container } from 'tsyringe';
@@ -60,6 +62,11 @@ container.registerSingleton<ICupomRepository>(
 container.registerSingleton<ICartaoPedidoRepository>(
   'CartaoPedidoRepository',
   CartaoPedidoRepository,
+);
+
+container.registerSingleton<IPedidoCupomRepository>(
+  'PedidoCupomRepository',
+  PedidoCupomRepository,
 );
 
 // utils
