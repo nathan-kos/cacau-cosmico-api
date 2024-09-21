@@ -1,8 +1,10 @@
+import { StatusPedido } from '@prisma/client';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import { AtualizarStatusPedidoService } from '../service/AtualizarStatusPedido.service';
 import { CreatePedidoService } from '../service/CreatePedido.service';
 import { findPedidoByIdService } from '../service/FindPedidoById.service';
+import { ListByStatusService } from '../service/ListByStatus.service';
 import { ListPedidoByUserIdService } from '../service/ListPedidoByUserId.service';
 
 class PedidoController {
@@ -61,6 +63,23 @@ class PedidoController {
     });
 
     return res.status(201).json(pedido);
+  }
+
+  async listByStatus(req: Request, res: Response) {
+    const { page, limit } = req.query;
+    const { ped_Status } = req.params;
+
+    const listByStatus = container.resolve(ListByStatusService);
+
+    const pedidos = await listByStatus.execute({
+      page: Number(page),
+      limit: Number(limit),
+      filter: {
+        ped_Status: ped_Status as StatusPedido,
+      },
+    });
+
+    return res.status(200).json(pedidos);
   }
 }
 
