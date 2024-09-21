@@ -7,6 +7,7 @@ import { ChocolatePedidoRepository } from '@modules/Chocolate_Pedido/repository/
 import { Cupom } from '@modules/Cupom/entitie/Cupom';
 import { CupomRepository } from '@modules/Cupom/repository/CupomRepository';
 import { EnderecoRepository } from '@modules/Endereco/repository/EnderecoRepository';
+import { PedidoCupomRepository } from '@modules/Pedido_Cupom/repository/PedidoCupomRepository';
 import { UserRepository } from '@modules/User/repository/UserRepository';
 import { StatusPedido } from '@prisma/client';
 import { BadRequestError } from '@shared/errors/BadRequestError';
@@ -41,6 +42,9 @@ class CreatePedidoService {
 
     @inject('CupomRepository')
     private cupomRepository: CupomRepository,
+
+    @inject('PedidoCupomRepository')
+    private pedidoCupomRepository: PedidoCupomRepository,
   ) {}
 
   async execute({
@@ -145,7 +149,7 @@ class CreatePedidoService {
     // passa cartoes e verifica se algum valor é menor que 10
     let totalCartoes = 0;
     cartoes.forEach((cartao) => {
-      if (cartao.car_Valor < 10) {
+      if (cartao.car_Valor < 10 && cartoes.length > 1) {
         throw new BadRequestError('Valor do cartão não pode ser menor que 10');
       }
 
@@ -198,6 +202,12 @@ class CreatePedidoService {
           cap_car_id: cartaoFinded.car_Id,
           cap_ped_id: pedido.ped_Id,
           cap_Valor: cartao.car_Valor,
+        });
+      }),
+      ...cupons.map(async (cupom) => {
+        await this.pedidoCupomRepository.create({
+          pcu_cup_id: cupom.cup_Id,
+          pcu_ped_id: pedido.ped_Id,
         });
       }),
     ]);
