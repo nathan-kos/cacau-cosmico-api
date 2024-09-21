@@ -54,3 +54,14 @@ export const createPedidoMiddleware = celebrate({
       .required(),
   },
 });
+
+export const listByStatusMiddleware = celebrate({
+  query: {
+    page: Joi.number().required(),
+    limit: Joi.number().required(),
+  },
+
+  params: {
+    ped_Status: Joi.string().required(),
+  },
+});

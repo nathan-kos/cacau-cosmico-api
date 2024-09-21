@@ -4,6 +4,7 @@ import {
   atualizarStatusPedidoMiddleware,
   createPedidoMiddleware,
   findPedidoByIdMiddleware,
+  listByStatusMiddleware,
   listPedidoByUserIdMiddleware,
 } from './validator/Pedido.validator';
 
@@ -30,5 +31,11 @@ pedidorouter.put(
 );
 
 pedidorouter.post('/', createPedidoMiddleware, pedidoController.CreatePedido);
+
+pedidorouter.get(
+  '/status/:ped_Status',
+  listByStatusMiddleware,
+  pedidoController.listByStatus,
+);
 
 export { pedidorouter };
