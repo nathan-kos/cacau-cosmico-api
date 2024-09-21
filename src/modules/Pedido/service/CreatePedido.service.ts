@@ -11,10 +11,11 @@ import { UserRepository } from '@modules/User/repository/UserRepository';
 import { StatusPedido } from '@prisma/client';
 import { BadRequestError } from '@shared/errors/BadRequestError';
 import { EntityNotFoundError } from '@shared/errors/EntityNotFoundError';
-import { inject } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import { Pedido } from '../entitie/Pedido';
 import { PedidoRepository } from '../repository/PedidoRepository';
 
+@injectable()
 class CreatePedidoService {
   constructor(
     @inject('PedidoRepository')
@@ -61,7 +62,7 @@ class CreatePedidoService {
       car_Id: string;
       car_Valor: number;
     }[];
-    cupons: string[];
+    cupons: { cup_Id: string }[];
   }): Promise<Pedido> {
     const user = await this.userRepository.findBy({ usu_Id });
 
@@ -104,7 +105,9 @@ class CreatePedidoService {
         cartoesFind.push(cartaoFind);
       }),
       ...cupons.map(async (cupom) => {
-        const cupomFind = await this.cupomRepository.findBy({ cup_Id: cupom });
+        const cupomFind = await this.cupomRepository.findBy({
+          cup_Id: cupom.cup_Id,
+        });
 
         if (!cupomFind) {
           throw new EntityNotFoundError('Cupom não encontrado');
