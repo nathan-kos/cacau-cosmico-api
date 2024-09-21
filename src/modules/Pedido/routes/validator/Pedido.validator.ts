@@ -32,8 +32,25 @@ export const createPedidoMiddleware = celebrate({
     usu_Id: Joi.string().uuid().required(),
     end_Id: Joi.string().uuid().required(),
     frete: Joi.number().required(),
-    cartoes: Joi.array().items(Joi.string().uuid()).required(),
-    chocolates: Joi.array().items(Joi.string().uuid()).required(),
-    cupons: Joi.array().items(Joi.string().uuid()).required(),
+    cartoes: Joi.array().items(
+      Joi.object().keys({
+        car_Id: Joi.string().uuid().required(),
+        car_Valor: Joi.number().required(),
+      }),
+    ),
+    chocolates: Joi.array().items(
+      Joi.object().keys({
+        cho_Id: Joi.string().uuid().required(),
+        quantidade: Joi.number().required(),
+      }),
+    ),
+    // objeto com string cup_Id
+    cupons: Joi.array()
+      .items(
+        Joi.object().keys({
+          cup_Id: Joi.string().uuid().required(),
+        }),
+      )
+      .required(),
   },
 });
