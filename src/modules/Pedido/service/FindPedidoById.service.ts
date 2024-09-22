@@ -2,7 +2,9 @@ import { ICartaoRepository } from '@modules/Cartao/repository/ICartaoRepository.
 import { ICartaoPedidoRepository } from '@modules/Cartao_Pedido/repository/CartaoPedidoRepository.interface';
 import { IChocolateRepository } from '@modules/Chocolate/repository/IChocolateRepository.interface';
 import { IChocolatePedidoRepository } from '@modules/Chocolate_Pedido/repository/ChocolateRepository.interface';
+import { ICupomRepository } from '@modules/Cupom/repository/ICupomRepository.interface';
 import { IEnderecoRepository } from '@modules/Endereco/repository/IEnderecoRepository.interface';
+import { IPedidoCupomRepository } from '@modules/Pedido_Cupom/repository/PedidoCupomRepository.interface';
 import { EntityNotFoundError } from '@shared/errors/EntityNotFoundError';
 import { inject, injectable } from 'tsyringe';
 import { Pedido } from '../entitie/Pedido';
@@ -28,6 +30,12 @@ class findPedidoByIdService {
 
     @inject('EnderecoRepository')
     private enderecoRepository: IEnderecoRepository,
+
+    @inject('PedidoCupomRepository')
+    private pedidoCupomRepository: IPedidoCupomRepository,
+
+    @inject('CupomRepository')
+    private cupomRepository: ICupomRepository,
   ) {}
 
   async execute(ped_Id: string): Promise<Pedido> {
@@ -72,18 +80,35 @@ class findPedidoByIdService {
       Object.assign(cap, { cartao });
     });
 
+    const pedidoCupom = await this.pedidoCupomRepository.listBy({
+      page: 1,
+      limit: 100,
+      filter: {
+        pcu_ped_id: ped_Id,
+      },
+    });
+
+    const pedidoCupomPromisse = pedidoCupom.results.map(async (pcu) => {
+      const cupom = await this.cupomRepository.findBy({
+        cup_Id: pcu.pcu_cup_id,
+      });
+
+      Object.assign(pcu, { cupom });
+    });
+
     const endereco = await this.enderecoRepository.findBy({
       end_Id: pedido.ped_end_id,
     });
 
     Object.assign(pedido, { endereco });
 
-    await Promise.all([promisseChocolate, promisseCartao]);
+    await Promise.all([promisseChocolate, promisseCartao, pedidoCupomPromisse]);
 
     const cho = chocolatePedido.results;
     const car = cartaoPedido.results;
+    const cup = pedidoCupom.results;
 
-    Object.assign(pedido, { cho, car });
+    Object.assign(pedido, { cho, car, cup });
 
     return pedido;
   }
