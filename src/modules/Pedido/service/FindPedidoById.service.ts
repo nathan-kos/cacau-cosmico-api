@@ -102,7 +102,12 @@ class findPedidoByIdService {
 
     Object.assign(pedido, { endereco });
 
-    await Promise.all([promisseChocolate, promisseCartao, pedidoCupomPromisse]);
+    // Aguarde todas as Promises antes de acessar os resultados
+    await Promise.all([
+      promisseChocolate,
+      promisseCartao,
+      ...pedidoCupomPromisse,
+    ]);
 
     const cho = chocolatePedido.results;
     const car = cartaoPedido.results;
