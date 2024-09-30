@@ -1,19 +1,15 @@
 import { IChocolateRepository } from '@modules/Chocolate/repository/IChocolateRepository.interface';
 import { IChocolatePedidoRepository } from '@modules/Chocolate_Pedido/repository/ChocolateRepository.interface';
-import { Cupom } from '@modules/Cupom/entitie/Cupom';
-import { ICupomRepository } from '@modules/Cupom/repository/ICupomRepository.interface';
 import { tde_Status } from '@prisma/client';
 import { BadRequestError } from '@shared/errors/BadRequestError';
 import { EntityNotFoundError } from '@shared/errors/EntityNotFoundError';
 import { inject, injectable } from 'tsyringe';
+import { TrocaDevolucao } from '../entitie/TrocaDevolucao';
 import { ITrocaDevolucaoRepository } from '../repository/TrocaDevolucaoRepository.interface';
 
 @injectable()
 class CreateTrocaDevolucaoService {
   constructor(
-    @inject('CupomRepository')
-    private cupomRepository: ICupomRepository,
-
     @inject('TrocaDevolucaoRepository')
     private trocaDevolucaoRepository: ITrocaDevolucaoRepository,
 
@@ -28,7 +24,7 @@ class CreateTrocaDevolucaoService {
     tde_cho_ped_id: string;
     tde_Troca: boolean;
     tde_Quantidade: number;
-  }): Promise<Cupom> {
+  }): Promise<TrocaDevolucao> {
     // operador ternário se for troca o status é troca se não é devolução
     const status = data.tde_Troca
       ? tde_Status.TROCA_SOLICITADA
@@ -67,16 +63,7 @@ class CreateTrocaDevolucaoService {
       );
     }
 
-    const valor = chocolate.cho_Valor * data.tde_Quantidade;
-
-    const cupom = await this.cupomRepository.create({
-      cup_Valor: valor,
-      cup_tde_id: trocaDevolucao.tde_Id,
-      // primeira parte do id da troca ou devolução
-      cup_Codigo: trocaDevolucao.tde_Id.slice(0, 5),
-    });
-
-    return cupom;
+    return trocaDevolucao;
   }
 }
 
