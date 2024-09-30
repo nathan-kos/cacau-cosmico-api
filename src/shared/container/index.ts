@@ -16,6 +16,8 @@ import { PedidoRepository } from '@modules/Pedido/repository/PedidoRepository';
 import { IPedidoRepository } from '@modules/Pedido/repository/PedidoRepository.interface';
 import { PedidoCupomRepository } from '@modules/Pedido_Cupom/repository/PedidoCupomRepository';
 import { IPedidoCupomRepository } from '@modules/Pedido_Cupom/repository/PedidoCupomRepository.interface';
+import { TrocaDevolucaoRepository } from '@modules/Troca_Devolucao/repository/TrocaDevolucaoRepository';
+import { ITrocaDevolucaoRepository } from '@modules/Troca_Devolucao/repository/TrocaDevolucaoRepository.interface';
 import { UserRepository } from '@modules/User/repository/UserRepository';
 import { IUserRepository } from '@modules/User/repository/UserRepository.interface';
 import { container } from 'tsyringe';
@@ -67,6 +69,11 @@ container.registerSingleton<ICartaoPedidoRepository>(
 container.registerSingleton<IPedidoCupomRepository>(
   'PedidoCupomRepository',
   PedidoCupomRepository,
+);
+
+container.registerSingleton<ITrocaDevolucaoRepository>(
+  'TrocaDevolucaoRepository',
+  TrocaDevolucaoRepository,
 );
 
 // utils
