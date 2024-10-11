@@ -7,6 +7,8 @@ const cupomController = new CupomController();
 
 // cupomRoutes.post('/', cupomController.create);
 
-cupomRoutes.get('/:codigo', cupomController.findByCodigo);
+cupomRoutes.get('/code/:codigo', cupomController.findByCodigo);
+
+cupomRoutes.get('/:cup_Id', cupomController.findById);
 
 export { cupomRoutes };
