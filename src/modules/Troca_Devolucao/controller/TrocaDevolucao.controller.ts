@@ -2,13 +2,25 @@ import { tde_Status } from '@prisma/client';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import { AceitarTrocaDevolucaoService } from '../service/AceitarTrocaDevolucao.service';
+import { CreateTrocaDevolucaoService } from '../service/CreateTrocaDevolucao.service';
 import { ListarByChocolatePedidoService } from '../service/ListarByPedido.service';
 import { ListarPorStatusService } from '../service/ListarPorStatus.service';
 import { RejeitarTrocaDevolucaoService } from '../service/RejeitarTrocaDevolucao.service';
 
 class TrocaDevolucaoController {
   async createTrocaDevolucao(req: Request, res: Response) {
-    const { troca_devolucao } = req.body;
+    const { tde_Troca, tde_Quantidade } = req.body;
+    const { tde_cho_ped_id } = req.params;
+
+    const createTrocaDevolucaoService = container.resolve(
+      CreateTrocaDevolucaoService,
+    );
+
+    const troca_devolucao = await createTrocaDevolucaoService.execute({
+      tde_cho_ped_id,
+      tde_Quantidade,
+      tde_Troca,
+    });
 
     return res.status(200).json(troca_devolucao);
   }
@@ -55,20 +67,13 @@ class TrocaDevolucaoController {
   }
 
   async listTrocaDevolucaoByChocolatePedido(req: Request, res: Response) {
-    const { page, limit } = req.query;
     const { tde_cho_ped_id } = req.params;
 
     const listTrocaDevolucao = container.resolve(
       ListarByChocolatePedidoService,
     );
 
-    const trocasDevolucoes = await listTrocaDevolucao.execute({
-      page: Number(page),
-      limit: Number(limit),
-      filter: {
-        tde_cho_ped_id,
-      },
-    });
+    const trocasDevolucoes = await listTrocaDevolucao.execute(tde_cho_ped_id);
 
     return res.status(200).json(trocasDevolucoes);
   }
