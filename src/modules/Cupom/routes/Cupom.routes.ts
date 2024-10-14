@@ -11,4 +11,6 @@ cupomRoutes.get('/code/:codigo', cupomController.findByCodigo);
 
 cupomRoutes.get('/:cup_Id', cupomController.findById);
 
+cupomRoutes.get('/chocolatePedido/:cho_ped_id', cupomController.findByChoPedId);
+
 export { cupomRoutes };
