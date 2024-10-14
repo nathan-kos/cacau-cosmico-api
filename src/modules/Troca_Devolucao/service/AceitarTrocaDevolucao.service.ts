@@ -33,13 +33,21 @@ class AceitarTrocaDevolucaoService {
       throw new EntityNotFoundError('Troca ou Devolução não encontrada');
     }
 
-    if (trocaDevolucao.tde_Status !== tde_Status.TROCA_SOLICITADA) {
+    if (
+      trocaDevolucao.tde_Status !== tde_Status.TROCA_SOLICITADA &&
+      trocaDevolucao.tde_Status !== tde_Status.DEVOLUCAO_SOLICITADA
+    ) {
       throw new BadRequestError('Troca ou Devolução já foi aceita');
+    }
+
+    let status: tde_Status = tde_Status.TROCA_ACEITA;
+    if (!trocaDevolucao.tde_Troca) {
+      status = tde_Status.DEVOLUCAO_ACEITA;
     }
 
     await this.trocaDevolucaoRepository.update({
       tde_Id,
-      tde_Status: tde_Status.TROCA_ACEITA,
+      tde_Status: status,
     });
 
     const chocolatePedido = await this.chocolatePedidoRepository.findBy({
