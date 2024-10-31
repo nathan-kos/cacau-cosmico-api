@@ -61,6 +61,19 @@ class PedidoRepository implements IPedidoRepository {
   delete(entity: Pedido): Promise<void> {
     throw new Error('Method not implemented.');
   }
+
+  async ListByDate(initialDate: Date, finalDate: Date): Promise<Pedido[]> {
+    const data = await prisma.pedido.findMany({
+      where: {
+        ped_CriadoEm: {
+          gte: initialDate,
+          lte: finalDate,
+        },
+      },
+    });
+
+    return data;
+  }
 }
 
 export { PedidoRepository };
