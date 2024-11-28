@@ -38,4 +38,6 @@ pedidorouter.get(
   pedidoController.listByStatus,
 );
 
+pedidorouter.post('/gerador', pedidoController.CreateMuitosPedidos);
+
 export { pedidorouter };

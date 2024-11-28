@@ -4,6 +4,7 @@ import { container } from 'tsyringe';
 import { AtualizarStatusPedidoService } from '../service/AtualizarStatusPedido.service';
 import { CreatePedidoService } from '../service/CreatePedido.service';
 import { findPedidoByIdService } from '../service/FindPedidoById.service';
+import { GeradorDePedido } from '../service/GeradorDePedidos.service';
 import { ListByStatusService } from '../service/ListByStatus.service';
 import { ListPedidoByUserIdService } from '../service/ListPedidoByUserId.service';
 
@@ -80,6 +81,16 @@ class PedidoController {
     });
 
     return res.status(200).json(pedidos);
+  }
+
+  async CreateMuitosPedidos(req: Request, res: Response) {
+    const { vezes } = req.body;
+
+    const createPedido = container.resolve(GeradorDePedido);
+
+    const pedido = await createPedido.execute(vezes);
+
+    return res.status(201).json(pedido);
   }
 }
 

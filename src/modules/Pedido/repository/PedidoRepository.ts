@@ -2,6 +2,7 @@ import { prisma } from '@shared/database';
 import { IPaginatedRequest } from '@shared/interfaces/IPaginatedRequest';
 import { IPaginatedResponse } from '@shared/interfaces/IPaginatedResponse';
 import { CreatePedidoDTO } from '../DTO/CreatePedidoDTO';
+import { createWithDate } from '../DTO/CreateWithDateDTO';
 import { UpdatePedidoDTO } from '../DTO/UpdatePedidoDTO';
 import { Pedido } from '../entitie/Pedido';
 import { IPedidoRepository } from './PedidoRepository.interface';
@@ -10,6 +11,14 @@ class PedidoRepository implements IPedidoRepository {
   async create(entity: CreatePedidoDTO): Promise<Pedido> {
     const pedido = await prisma.pedido.create({
       data: entity,
+    });
+
+    return pedido;
+  }
+
+  async createWithDate(data: createWithDate): Promise<Pedido> {
+    const pedido = await prisma.pedido.create({
+      data,
     });
 
     return pedido;
